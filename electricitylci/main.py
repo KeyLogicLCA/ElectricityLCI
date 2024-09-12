@@ -124,11 +124,11 @@ def run_distribution(generation_process_dict):
     dict
         The regionalized distribution mix processes in openLCA schema format.
     """
-    # Force the generation of BA aggregation if doing FERC, US, or BA regions.
+    # Force the generation of BA aggregation if doing FERC or BA regions.
     # This is because the consumption mixes are based on imports from
     # balancing authority areas.
     logging.info("get gen mix process")
-    if config.model_specs.regional_aggregation in ["FERC", "US"]:
+    if config.model_specs.regional_aggregation in ["FERC"]:
         generation_mix_df = get_generation_mix_process_df("BA")
     else:
         generation_mix_df = get_generation_mix_process_df()
@@ -203,7 +203,7 @@ def run_generation():
     )
 
     logging.info("write generation process to dict")
-    if config.model_specs.regional_aggregation in ["FERC", "US"]:
+    if config.model_specs.regional_aggregation in ["FERC"]:
         generation_process_dict = write_gen_fuel_database_to_dict(
             generation_process_df, upstream_dict, subregion="BA"
         )
