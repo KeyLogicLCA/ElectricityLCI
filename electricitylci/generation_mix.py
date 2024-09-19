@@ -191,23 +191,24 @@ def create_generation_mix_process_df_from_model_generation_data(
             :
         ]
 
-    canada_list=[]
-    canada_subregions = [
-        "B.C. Hydro & Power Authority",
-        "Hydro-Quebec TransEnergie",
-        "Manitoba Hydro",
-        "New Brunswick System Operator",
-        "Ontario IESO"
-    ]
-    for reg in canada_subregions:
-        canada_list.append((reg,"ALL",1.0,1.0))
-    canada_df = pd.DataFrame(
-        canada_list,
-        columns=["Subregion","FuelCategory","Electricity","Generation_Ratio"]
-    )
-    subregion_fuel_gen = pd.concat(
-        [subregion_fuel_gen,canada_df],
-        ignore_index=True)
+    if subregion != "US":
+        canada_list=[]
+        canada_subregions = [
+            "B.C. Hydro & Power Authority",
+            "Hydro-Quebec TransEnergie",
+            "Manitoba Hydro",
+            "New Brunswick System Operator",
+            "Ontario IESO"
+        ]
+        for reg in canada_subregions:
+            canada_list.append((reg,"ALL",1.0,1.0))
+        canada_df = pd.DataFrame(
+            canada_list,
+            columns=["Subregion","FuelCategory","Electricity","Generation_Ratio"]
+        )
+        subregion_fuel_gen = pd.concat(
+            [subregion_fuel_gen,canada_df],
+            ignore_index=True)
     return subregion_fuel_gen
 
 

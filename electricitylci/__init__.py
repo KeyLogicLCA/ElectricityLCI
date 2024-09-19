@@ -167,11 +167,17 @@ def get_consumption_mix_df(subregion=None, regions_to_keep=None):
     if subregion is None:
         subregion = config.model_specs.regional_aggregation
 
-    io_trade_df = trade.ba_io_trading_model(
-        year=config.model_specs.NETL_IO_trading_year,
-        subregion=subregion,
-        regions_to_keep=regions_to_keep
-    )
+    if subregion == 'US':
+        # set consumption mix equal to generation mix
+        df = pd.DataFrame({'fraction': [1.0],
+                           'export_name': ['US']})
+        io_trade_df = {"US": df}
+    else:
+        io_trade_df = trade.ba_io_trading_model(
+            year=config.model_specs.NETL_IO_trading_year,
+            subregion=subregion,
+            regions_to_keep=regions_to_keep
+        )
     return io_trade_df
 
 
@@ -312,8 +318,8 @@ def get_generation_mix_process_df(regions=None):
     if regions is None:
         regions = config.model_specs.regional_aggregation
 
-    if config.model_specs.replace_egrid or regions in ["BA", "FERC", "US"]:
-        if regions in ["BA","FERC","US"] and not (
+    if config.model_specs.replace_egrid or regions in ["BA", "FERC"]:
+        if regions in ["BA","FERC"] and not (
                 config.model_specs.replace_egrid):
             logging.info(
                 "EIA923 generation data are being used for the generation mix "
@@ -465,7 +471,7 @@ def get_generation_process_df(regions=None, **kwargs):
         if regions is None:
             regions = config.model_specs.regional_aggregation
 
-        if regions in ["BA", "FERC", "US"]:
+        if regions in ["BA", "FERC"]:
             generation_process_df = aggregate_gen(gen_plus_fuels, "BA")
         else:
             generation_process_df = aggregate_gen(gen_plus_fuels, regions)
@@ -918,7 +924,7 @@ def write_generation_mix_database_to_dict(genmix_db, gen_dict, regions=None):
 
     if regions is None:
         regions = config.model_specs.regional_aggregation
-    if regions in ["FERC","US","BA"]:
+    if regions in ["BA","FERC"]:
         regions = "BA"
     genmix_dict = olcaschema_genmix(genmix_db, gen_dict, regions)
 
