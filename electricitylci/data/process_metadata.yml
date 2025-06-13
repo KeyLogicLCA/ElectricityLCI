@@ -613,7 +613,7 @@ wind:
   Sources:
     Source1:
       <<: *ingwersen_etal
-      
+
     Source2:
       Name: 'Life Cycle Assessment of Electricity Production from an onshore V110-2.0 MW Wind Plant'
 
@@ -633,11 +633,11 @@ wind:
 
       Category: 'NREL'
 
-      TextReference: 'Fingersh et al., 2006. Wind Turbine Design Cost and Scaling Model, 
+      TextReference: 'Fingersh et al., 2006. Wind Turbine Design Cost and Scaling Model,
         Technical Report NREL/TP-500-40566 (Accessed June 15, 2010)'
-      
+
       Url: 'https://docs.nrel.gov/docs/fy07osti/40566.pdf'
-    
+
     Source4:
       Name: 'Life Cycle Assessment of a Wind Turbine'
 
@@ -1092,7 +1092,7 @@ construction_upstream:
   techno_process: &construction_techno_process
     - 'The inventories represent the construction of either natural gas combined cycle or coal power plants using an economic input output life cycle inventory model (https://doi.org/10.1016/j.jclepro.2017.04.150) and the construction costs for these plants as detailed by NETL techno-economics analysis (https://www.netl.doe.gov/energy-analysis/details?id=729).
       These type different types of power plants are then assigned to the various power plants according to the plant they most resemble.
-      The inventories are then scaled according to power plant capacity relative to the source power plants and the allocated over an assumed 30 year life.
+      The inventories are then scaled according to power plant capacity relative to the source power plants and then allocated over an assumed 30 year life.
       The single year of impacts are then divided by the generation of the year selected in the model configuration.'
 
   Description:
@@ -1112,7 +1112,7 @@ construction_upstream:
   DataSelection: 'The inventories represent the construction of either natural gas combined cycle or coal power plants using an economic input output life cycle inventory model (https://doi.org/10.1016/j.jclepro.2017.04.150) and the construction costs for these plants as detailed by NETL techno-economics analysis (https://www.netl.doe.gov/energy-analysis/details?id=729).'
 
   DataTreatment: 'These type different types of power plants are then assigned to the various power plants according to the plant they most resemble.
-    The inventories are then scaled according to power plant capacity relative to the source power plants and the allocated over an assumed 30 year life.
+    The inventories are then scaled according to power plant capacity relative to the source power plants and then allocated over an assumed 30 year life.
     The single year of impacts are then divided by the generation of the year selected in the model configuration.'
 
   SamplingProcedure:
@@ -1201,7 +1201,7 @@ solarpv_construction_upstream:
 
   DataSelection: 'Where possible data is sourced from freely available life cycle data, such as NETL unit processes or USLCI.
     If the material was not available there then ecoinvent processes are used.'
-  
+
   # Entering the year 2024 for DataCollection Period to show
   # when the most recent data was generated (representing 2020).
   DataCollectionPeriod: '2024'
@@ -1329,7 +1329,7 @@ solartherm_construction_upstream:
   Sources:
     Source1:
       <<: *ingwersen_etal
-    
+
     Source2:
       Name: 'Role of Alternative Energy Sources: Solar Thermal Technology Assessment'
 
@@ -1413,11 +1413,11 @@ wind_construction_upstream:
 
       Category: 'NREL'
 
-      TextReference: 'Fingersh et al., 2006. Wind Turbine Design Cost and Scaling Model, 
+      TextReference: 'Fingersh et al., 2006. Wind Turbine Design Cost and Scaling Model,
         Technical Report NREL/TP-500-40566 (Accessed June 15, 2010)'
-      
+
       Url: 'https://docs.nrel.gov/docs/fy07osti/40566.pdf'
-    
+
     Source4:
       Name: 'Life Cycle Assessment of a Wind Turbine'
 
