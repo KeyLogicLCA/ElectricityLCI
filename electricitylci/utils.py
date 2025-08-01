@@ -29,9 +29,10 @@ from electricitylci.globals import output_dir
 __doc__ = """Small utility functions for use throughout the repository.
 
 Last updated:
-    2025-06-11
+    2025-08-01
 
 Changelog:
+    -   [25.08.01]: Read line from file helper method
     -   [25.06.11]: Create background data archive method
     -   [25.06.11]: Hotfix facilitymatcher global paths
     -   [25.05.08]: Make EIA930 reference table an offline file
@@ -57,6 +58,7 @@ __all__ = [
     "join_with_underscore",
     "linear_search",
     "make_valid_version_num",
+    "read_line_from_file",
     "read_ba_codes",
     "read_eia_api",
     "read_json",
@@ -1125,6 +1127,37 @@ def make_valid_version_num(foo):
     return result
 
 
+def read_line_from_file(filename):
+    """Helper function to read a single-line from a text file.
+
+    Parameters
+    ----------
+    filename : str
+        A text file storing a single line of text (i.e., API key).
+
+    Returns
+    -------
+    str
+        The string read from a text file.
+
+    Examples
+    --------
+    >>> my_file = "eia_api.txt"
+    >>> my_api_key = read_line_from_file(my_file)
+    """
+    try:
+        with open(filename, 'r') as f:
+            my_line = f.readline().strip()
+            return my_line
+    except FileNotFoundError:
+        logging.error("Failed to file file, '%s'!" % filename)
+        return None
+    except Exception as e:
+        logging.error("Unexpected error when reading file, '%s'!" % filename)
+        logging.error(f"{e}")
+        return None
+
+
 def read_ba_codes_old():
     """Create a data frame of balancing authority names and codes.
 
@@ -1358,12 +1391,11 @@ def read_eia_api(url, url_try=0, max_tries=5):
     r = requests.get(url, timeout=20)
     r_status = r.status_code
     if r_status == 200:
-        r_content = r.content
         try:
             r_dict = r.json()
         except:
-            # If at first you, fail...
-            r_content = decode_str(r_content)
+            # If at first you fail, try again!
+            r_content = decode_str(r.content)
             r_dict = json.loads(r_content)
     else:
         if url_try < max_tries:
