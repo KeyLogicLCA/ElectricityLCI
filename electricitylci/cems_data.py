@@ -60,8 +60,17 @@ In the current release, the PUDL methods are replaced with EPA's API:
 https://github.com/USEPA/ElectricityLCI/issues/207#issuecomment-1751075194
 
 Last edited:
-    2024-09-25
+    2025-08-01
 """
+__all__ = [
+    "CEMS_COL_NAMES",
+    "CEMS_STATES",
+    "build_cems_df",
+    "extract",
+    "path",
+    "process_cems_dfs",
+    "read_cems_api",
+]
 
 
 ##############################################################################
@@ -501,6 +510,12 @@ def read_cems_api(api_key, year, state=None, force=False):
 # MAIN
 ##############################################################################
 if __name__ == '__main__':
-    year = 2016
-    df = build_cems_df(year)
-    df.to_csv(f'{output_dir}/cems_emissions_{year}.csv')
+    # Archive CEMS data
+    from electricitylci.utils import get_logger
+    from electricitylci.utils import read_line_from_file
+
+    log = get_logger(True, False)
+    years = [x for x in range(2020, 2025, 1)]
+    states = CEMS_STATES
+    api_key = read_line_from_file("epa_api.txt")
+    df_list = extract(years, states, True, api_key)
