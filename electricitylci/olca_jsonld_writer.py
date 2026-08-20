@@ -35,6 +35,7 @@ from electricitylci.globals import paths
 from electricitylci.globals import elci_version as VERSION
 from electricitylci.utils import check_output_dir
 from electricitylci.utils import read_ba_codes
+from electricitylci import ilcd_naming
 
 
 ##############################################################################
@@ -377,6 +378,7 @@ def clean_json(file_path):
     6.  Fix compartment for two product flows: 'Light fuel oil' and
         'Ammonium nitrate' from the coal model.
     7.  Fix inventory method description for C2G and G2G processes.
+    8.  Update process names to follow ILCD naming convention
 
     Parameters
     ----------
@@ -395,6 +397,8 @@ def clean_json(file_path):
         # https://github.com/NETL-RIC/ElectricityLCI/issues/217
         e_list = []
         for p in data["Process"]['objs']:
+            # update names
+            p.name = ilcd_naming.apply_ilcd_naming(p.name, p.location.name)
             # Issue #328; check if unit processes are C2G or G2G [260319;TWD]
             has_provider = False
 
