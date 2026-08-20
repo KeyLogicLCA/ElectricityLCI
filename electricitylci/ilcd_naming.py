@@ -194,7 +194,7 @@ def rename_consumption_mix_at_user(p_name, location):
 
     try:
         regional_aggregation = next(
-            (option for option in ["eGRID", "NERC", "BA", "US", "FERC", "EIA"]
+            (option for option in ["eGRID", "NERC", "BA", "US ", "FERC", "EIA"]
             if option.lower() in p_name.lower()),
             ""
         )
@@ -255,6 +255,25 @@ def rename_generation_at_source(p_name, location):
             f"- defaulting to 'unspecified source'."
         )
         source = "unspecified source"
+
+    sources_map = {
+        "biomass": "Biomass power plant",
+        "gas": "Natural gas-fired power plant",
+        "mixed": "Mixed-powered electricity",
+        "othf": "Other fuel power plant",
+        "coal": "Coal-fired power plant",
+        "geothermal": "Geothermal power plant",
+        "hydro": "Hydroelectric power plant",
+        "natural gas": "Natural gas-fired power plant",
+        "nuclear": "Nuclear power plant",
+        "oil": "Oil-fired power plant",
+        "solar": "Solar photovoltaic farm",
+        "wind": "Wind farm",
+        "solarthermal": "Solar thermal power plant", 
+        "all": "All",
+    }
+
+    source = sources_map.get(source, source)
 
     if location is None:
         operator = "unspecified operator" 
@@ -419,7 +438,7 @@ def rename_coal_processes(p_name, location):
 
     try:
         new_n = (
-                f"{fuel_name}; {treatment_received}; {production_route}; {location}"
+                f"{fuel_name} {treatment_received}; {production_route}; {location}"
             )
     except Exception as e:
         logging.error(
@@ -467,15 +486,13 @@ def rename_coal_transport_processes(p_name, location):
         raise ValueError(
             f"Expected a coal transport process, received: {activity!r}"
         )
-    
-    production_route = transport_mode
 
     if location == "United States of America (the)":
         location = "United States"
 
     try:
         new_n = (
-            f"Coal; Transport; {production_route}; {location}"
+            f"Coal transport; {transport_mode}; {location}"
         )
     except Exception as e:
         logging.error(
@@ -559,7 +576,7 @@ def rename_petroleum_production(p_name, location):
     production_route = f"Petroleum production, PADD {padd_number}"
     try:
         new_n = (
-            f"{fuel_name}; {treatment_received}; {production_route}; {location}"
+            f"{fuel_name} {treatment_received}; {production_route}; {location}"
         )
 
         new_n = new_n[0].upper() + new_n[1:]  # Capitalize first letter
@@ -599,7 +616,7 @@ def rename_nuclear_production(p_name, location):
 
     try:
         new_n = (
-            f"Nuclear fuel; extraction, processing, and transport; {location}"
+            f"Nuclear fuel extraction, processing, and transport; {location}"
         )
 
     except Exception as e:
@@ -696,7 +713,7 @@ def rename_plant_construction(p_name, location):
     plant_specification = plant_info["plant_specification"]
     try:
         new_n = (
-            f"{plant_type}; power plant construction; {plant_specification}; {location}"
+            f"{plant_type} power plant construction; {plant_specification}; {location}"
         )    
     except Exception as e:
         logging.error(
@@ -730,7 +747,7 @@ def rename_natural_gas_processes(p_name, location):
 
     try:
         new_n = (
-            f"Natural gas; Extraction, processing, and transport; {location}"
+            f"Natural gas extraction, processing, and transport; {location}"
         )
     except Exception as e:
         logging.error(
