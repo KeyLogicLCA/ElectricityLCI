@@ -399,6 +399,15 @@ def clean_json(file_path):
         for p in data["Process"]['objs']:
             # update names
             p.name = ilcd_naming.apply_ilcd_naming(p.name, p.location.name)
+            # update names of product systems
+            p_names = {
+                p.id:p.name
+                for p in data["Process"]['objs']
+            }
+            for ps in data["ProductSystem"]['objs']:
+                p_ref = ps.ref_process
+                if p_ref and p_ref.id in p_names.keys():
+                    ps.name = p_names[p_ref.id]
             # Issue #328; check if unit processes are C2G or G2G [260319;TWD]
             has_provider = False
 
