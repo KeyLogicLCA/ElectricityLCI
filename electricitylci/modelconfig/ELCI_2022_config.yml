@@ -185,3 +185,6 @@ rem_weight_method: 'gen'
 # 'zero' - will floor negative renewable energy values to zero; any
 #          remainder is not accounted for.
 neg_rem_method: 'zero'
+
+# Apply ilcd naming
+apply_ilcd_naming: true

@@ -50,6 +50,7 @@ def apply_ilcd_naming(p_name, p_location):
 ###########################################################################
 def get_renaming_function(name):
     """
+    TODO - log anything that doesn't match - include any failed processes from renaming functions
     This function returns the appropriate renaming function based on the process name. 
     A dictionary of renaming functions is defined, where the keys are the prefixes of 
     the process names and the values are the corresponding renaming functions.
