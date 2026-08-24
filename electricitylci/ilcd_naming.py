@@ -1,12 +1,22 @@
-# [FH] Work in Progress
-# this is a function to rename processes in the ILCD format
-import re
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+#
+# ilcd_naming.py
+#
+##############################################################################
+# REQUIRED MODULES
+##############################################################################
 import logging
+import re
 
-from sys import prefix
-from netlolca import get_dict_number
-import olca_schema as o
+##############################################################################
+# MODULE DOCUMENTATION
+##############################################################################
+# [In Progress...]
 
+##############################################################################
+# FUNCTIONS
+##############################################################################
 
 def apply_ilcd_naming(p_name, p_location):
     """
