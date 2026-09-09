@@ -159,6 +159,8 @@ class ModelSpecs:
         The method to deal with negative renewable electricity generation
         (e.g., if REC sales in a BA are greater than renewable electricity generation); choose either to 'zero' excess or 'keep' excess and
         attempt to subtract from vague fuel categories (e.g., MIXED or OTHER).
+    apply_ilcd_naming : bool
+        Whether to apply ILCD naming conventions to the JSON-LD output.
     """
     def __init__(self, model_specs, model_name):
         """Class initialization.
@@ -228,6 +230,7 @@ class ModelSpecs:
             f"{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.zip"
         )
         self.ng_model_year = model_specs["ng_model_year"]
+        self.apply_ilcd_naming = model_specs.get("apply_ilcd_naming")
 
 
 ##############################################################################
@@ -394,5 +397,10 @@ def check_model_specs(model_specs):
             err_str += " or ".join([x for x in NEG_REM_METHODS])
             err_str += "; not '%s'!" % model_specs['neg_rem_method']
             raise ConfigurationError(err_str)
+
+    if model_specs['apply_ilcd_naming'] not in [True, False]:
+        raise ConfigurationError(
+            "The apply_ilcd_naming parameter must be a boolean value (True or False)."
+        )
 
     logging.info("Checks passed!")

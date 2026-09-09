@@ -305,7 +305,7 @@ C2G_LCI_METHOD = "Attributional\nCradle-to-Gate process"
 G2G_LCI_METHOD = "Attributional\nGate-to-Gate process"
 '''str : Metadata text for gate-to-gate inventory method description'''
 
-
+APPLY_ILCD_NAMING = [True, False]
 ##############################################################################
 # FUNCTIONS
 ##############################################################################
