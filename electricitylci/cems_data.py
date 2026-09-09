@@ -9,6 +9,7 @@
 import os
 import logging
 import time
+import ast
 
 import pandas as pd
 
@@ -458,6 +459,14 @@ def read_cems_api(api_key, year, state=None, force=False):
     if os.path.exists(c_file) and not force:
         logging.info("Found CEMS data file for %s %s" % (state, year))
         tmp_df = pd.read_csv(c_file)
+        # [FH] Check if the cached file has the old malformed structure
+        # (single 'items' column with stringified dicts)
+        # if the files exist then they are likely to be in the correct format
+        # thanks to the _write_cems_api function, but to stay on the safe side
+        # I added this check
+        if list(tmp_df.columns) == ['items']:
+            js_list = [ast.literal_eval(item) for item in tmp_df['items']]
+            tmp_df = pd.DataFrame(js_list).rename(columns=c_map)
     else:
         # Check that API key exists
         if api_key is None or api_key == "":
@@ -478,8 +487,10 @@ def read_cems_api(api_key, year, state=None, force=False):
         # NOTE:
         # For hourly or daily data, the 'X-Total-Count' in h_dict will be
         # useful for incrementing the page count in the params.
-        js_list, url_tries, h_dict = read_from_api(CAM_API_URL, params=params)
-        tmp_df = pd.DataFrame.from_dict(js_list).rename(columns=c_map)
+        js_dict, url_tries, h_dict = read_from_api(CAM_API_URL, params=params)
+        # Extract items from new API response structure
+        js_list = js_dict.get('items', []) if isinstance(js_dict, dict) else js_dict
+        tmp_df = pd.DataFrame(js_list).rename(columns=c_map)
         if len(tmp_df) == 0 or url_tries == 5:
             logging.warning(
                 "Failed to retrieve data for %s %s!" % (state, year)
