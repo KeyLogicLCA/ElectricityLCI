@@ -157,3 +157,6 @@ run_post_processes: true
 
 
 # OTHER PARAMETERS
+
+# Apply ilcd naming
+apply_ilcd_naming: true
